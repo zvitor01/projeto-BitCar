@@ -50,7 +50,7 @@ void menu();
 int main()
 {
     system("mode con:cols=80 lines=25");
-
+    telaCarregamento();
     telaLogin();
 
     return 0;
@@ -87,7 +87,6 @@ void bordas()
         gotoxy(79, 24);
         printf("%c", 217); //canto inferior direito
     }
-    printf("\n");
 }
 
 void telaCarregamento()
@@ -113,7 +112,7 @@ void telaCarregamento()
 
         printf("[");
 
-        for (int j = 0; j < i; j++) 
+        for (int j = 0; j < i; j++)
             printf("%c", 219);
 
         for (int j = i; j < tam; j++)
@@ -142,39 +141,41 @@ void telaLogin()
 
     system("cls");
 	bordas();
-	gotoxy(28,2);
+	gotoxy(28, 2);
 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
-	gotoxy(28,3);
+	gotoxy(28, 3);
 	printf("%c          BitCar          %c",179,179);
-    gotoxy(28,4);
+    gotoxy(28, 4);
 	printf("%c     Revenda de Carros    %c",179,179);
-	gotoxy(28,5);
+	gotoxy(28, 5);
 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
-	gotoxy(35,6);
+	gotoxy(35, 6);
 	printf("Tela de Login");
-	gotoxy(28,7);
+	gotoxy(28, 7);
 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
 
     gotoxy(28, 11);
-    printf ("Digite o usuario: ");
+    printf("Digite o usuario: ");
     gotoxy(28, 12);
-    printf ("Digite a senha..: ");
+    printf("Digite a senha..: ");
 
     gotoxy(46, 11);
     fgets(loginUser, 10, stdin);
     strtok(loginUser, "\n");
-    
+
     gotoxy(46, 12);
     fgets(senhaUser, 10, stdin);
     strtok(senhaUser, "\n");
 
     if(strcmp(login, loginUser) == 0 && strcmp(senha, senhaUser) == 0)
+    {
         menu();
+    }
     else
-    {   
+    {
         gotoxy(25, 15);
         printf("Usuario e/ou senha invalidos");
-        Sleep(2000);
+        Sleep(1200);
         telaLogin();
     }
 }
@@ -182,5 +183,37 @@ void telaLogin()
 void menu()
 {
     system("cls");
-    system("pause");
+	bordas();
+
+	char opcao;
+
+	gotoxy(28, 2);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
+	gotoxy(28, 3);
+	printf("%c          BitCar          %c",179,179);
+    gotoxy(28, 4);
+	printf("%c     Revenda de Carros    %c",179,179);
+	gotoxy(28, 5);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
+	gotoxy(35, 6);
+	printf("Menu principal");
+	gotoxy(28, 7);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+
+    gotoxy(28, 9);
+    printf("[1] Incluir");
+    gotoxy(28, 10);
+    printf("[2] Buscar");
+    gotoxy(28, 11);
+    printf("[3] Alterar");
+    gotoxy(28, 12);
+    printf("[4] Listar");
+    gotoxy(28, 13);
+    printf("[5] Excluir");
+    gotoxy(28, 14);
+    printf("[6] Gerar relatorio");
+    gotoxy(28, 15);
+    printf("[7] Sair");
+
+
 }
