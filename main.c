@@ -14,14 +14,14 @@
 
 // Tipos especiais (enum)
 typedef enum {
-    GASOLINA,
+    GASOLINA = 1,
     ALCOOL,
     DIESEL,
     FLEX
 } Combustivel;
 
 typedef enum {
-    PASSEIO,
+    PASSEIO = 1,
     UTILITARIO
 } TipoCarro;
 
@@ -45,6 +45,8 @@ void bordas();
 void telaCarregamento();
 void telaLogin();
 void menu();
+
+void sair();
 
 //função principal
 int main()
@@ -215,5 +217,55 @@ void menu()
     gotoxy(28, 15);
     printf("[7] Sair");
 
+    gotoxy(28, 17);
+    printf("Escolha a opcao desejada: ");
+    opcao = getche();
 
+    switch(opcao)
+    {
+        case '1':
+
+            break;
+
+        case '2':
+
+            break;
+
+        case '3':
+
+            break;
+
+        case '4':
+
+            break;
+
+        case '5':
+
+            break;
+
+        case '6':
+
+            break;
+
+        case '7':
+            sair();
+            break;
+
+        default:
+            menu();
+            break;
+    }
+}
+
+
+
+void sair()
+{
+    system("cls");
+    bordas();
+    gotoxy(25, 12);
+    printf("Obrigado por usar nosso sistema!");
+    gotoxy(4,23);
+    system("pause");
+    exit(0);
 }
