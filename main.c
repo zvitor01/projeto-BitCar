@@ -13,20 +13,18 @@
 #include <windows.h>
 
 // Tipos especiais (enum)
-typedef enum {
-    GASOLINA = 1,
-    ALCOOL,
-    DIESEL,
-    FLEX
+typedef enum 
+{
+    gasolina = 1, alcool, diesel, flex
 } Combustivel;
 
-typedef enum {
-    PASSEIO = 1,
-    UTILITARIO
+typedef enum 
+{
+    passeio = 1, utilitario
 } TipoCarro;
 
 //estrutura
-struct cadastro
+typedef struct
 {
     int codigo;
     char marca[20];
@@ -35,9 +33,9 @@ struct cadastro
     int anoModelo;
     Combustivel combustivel;
     TipoCarro tipo;
-    float preco;
+    double preco;
     char data[12];
-} carro;
+}cadastro;
 
 //declaração de funções
 void gotoxy(int x, int y);
@@ -45,15 +43,17 @@ void bordas();
 void telaCarregamento();
 void telaLogin();
 void menu();
-
+void incluir();
 void sair();
 
 //função principal
 int main()
 {
     system("mode con:cols=80 lines=25");
-    telaCarregamento();
-    telaLogin();
+
+ 
+
+    menu();
 
     return 0;
 }
@@ -66,28 +66,28 @@ void gotoxy(int x, int y)
 
 void bordas()
 {
+    // cantos
+    gotoxy(2,2);
+    printf("%c", 218);
+    gotoxy(79,2);
+    printf("%c", 191);
+    gotoxy(2,24);
+    printf("%c", 192);
+    gotoxy(79,24);
+    printf("%c", 217);
+
+    // horizontais
     for (int x = 3; x < 79; x++)
     {
-        gotoxy(x, 2);
-        printf ("%c", 196);//borda horizontal superior
-        gotoxy(x, 24);
-        printf("%c", 196); //borda horizontal inferior
+        gotoxy(x, 2); printf ("%c", 196);
+        gotoxy(x, 24); printf ("%c", 196);
     }
 
+    // verticais
     for (int y = 3; y < 24; y++)
     {
-        gotoxy(2, 2);
-        printf("%c", 218); //canto superior esquerdo
-        gotoxy(79, 2);
-        printf("%c", 191); //canto superior direito
-        gotoxy(2, y);
-        printf("%c", 179); //borda vertical do lado direito
-        gotoxy(79, y);
-        printf("%c", 179); //borda vertical do lado esquerdo
-        gotoxy(2, 24);
-        printf("%c", 192); //canto inferior esquerdo
-        gotoxy(79, 24);
-        printf("%c", 217); //canto inferior direito
+        gotoxy(2, y); printf("%c", 179);
+        gotoxy(79, y); printf("%c", 179);
     }
 }
 
@@ -163,11 +163,11 @@ void telaLogin()
 
     gotoxy(46, 11);
     fgets(loginUser, 10, stdin);
-    strtok(loginUser, "\n");
+    loginUser[strcspn(loginUser,"\n")] = 0;
 
     gotoxy(46, 12);
     fgets(senhaUser, 10, stdin);
-    strtok(senhaUser, "\n");
+    senhaUser[strcspn(senhaUser,"\n")] = 0;
 
     if(strcmp(login, loginUser) == 0 && strcmp(senha, senhaUser) == 0)
     {
@@ -219,12 +219,12 @@ void menu()
 
     gotoxy(28, 17);
     printf("Escolha a opcao desejada: ");
-    opcao = getche();
+    opcao = getche(); //função da biblioteca conio.h que lê o caractere digitado pelo usuário 
 
     switch(opcao)
     {
         case '1':
-
+            incluir();
             break;
 
         case '2':
@@ -257,7 +257,110 @@ void menu()
     }
 }
 
+void incluir()
+{
+    cadastro carro;
+    FILE *arq;
+    int codigo = 1;
+    int c;
 
+    system("cls");
+    bordas();
+    gotoxy(28, 2);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
+	gotoxy(28, 3);
+	printf("%c          BitCar          %c",179,179);
+    gotoxy(28, 4);
+	printf("%c     Revenda de Carros    %c",179,179);
+	gotoxy(28, 5);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
+	gotoxy(31, 6);
+	printf("  Cadastro de Carros");
+	gotoxy(28, 7);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+
+    //abre arquivo binario ou cria se nao existir
+    arq = fopen("carros.dat", "ab+");
+
+    if(arq)
+    {
+        fread(&carro, sizeof(cadastro), 1, arq);
+        while(!feof(arq))
+        {
+            if(codigo == carro.codigo)
+            {
+                codigo++;
+            }
+            fread(&carro, sizeof(cadastro), 1, arq);
+        }
+        carro.codigo = codigo;
+
+        gotoxy(4, 9);
+        printf("Marca: ");
+        gotoxy(4, 10);
+        printf("Modelo: ");
+        gotoxy(4, 11);
+        printf("Ano de fabricacao: ");
+        gotoxy(4, 12);
+        printf("Ano do modelo: ");
+        gotoxy(4, 13);
+        printf("Combustivel (1 = Gasolina, 2 = Alcool, 3 = Diesel, 4 = Flex): ");
+        gotoxy(4, 14);
+        printf("Tipo (1 = Passeio, 2 = Utilitario): ");
+        gotoxy(4, 15);
+        printf("Preco de venda: ");
+        _strdate(carro.data);
+
+        gotoxy(12, 9);
+        fgets(carro.marca, 20, stdin);
+        carro.marca[strcspn(carro.marca, "\n")] = 0;
+
+        gotoxy(13, 10);
+        fgets(carro.modelo, 20, stdin);
+        carro.modelo[strcspn(carro.modelo, "\n")] = 0;
+
+        gotoxy(24, 11);
+        scanf("%d", &carro.anoFabricacao);
+        while ((c = getchar()) != '\n' && c != EOF); // flush
+
+        gotoxy(20, 12);
+        scanf("%d", &carro.anoModelo);
+        while ((c = getchar()) != '\n' && c != EOF); // flush
+
+        do {
+            gotoxy(67, 13);
+            scanf("%d", &carro.combustivel);
+            while ((c = getchar()) != '\n' && c != EOF); // flush
+        } while (carro.combustivel < gasolina || carro.combustivel > flex);
+
+        do {
+            gotoxy(41, 14);
+            scanf("%d", &carro.tipo);
+            while ((c = getchar()) != '\n' && c != EOF); // flush
+        } while (carro.tipo < passeio || carro.tipo > utilitario);
+
+        gotoxy(21, 15);
+        scanf("%lf", &carro.preco);
+        while ((c = getchar()) != '\n' && c != EOF); // flush
+
+        //gravar os dados no arquivo
+        fwrite(&carro, sizeof(cadastro), 1, arq);
+
+        gotoxy(4, 17);
+        printf("Dados gravados com sucesso!\n");
+    }
+    else
+    {
+        printf("Não foi possível criar ou abrir o arquivo.");
+        exit(0);
+    }
+
+    //fechar o arquivo
+    fclose(arq);
+    gotoxy(4,23);
+    system("pause");
+    menu();
+}
 
 void sair()
 {
