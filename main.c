@@ -184,77 +184,82 @@ void telaLogin()
 
 void menu()
 {
-    system("cls");
-	bordas();
+    char opcao;
 
-	char opcao;
+    do
+    {   
+        system("cls");
+        bordas();
 
-	gotoxy(28, 2);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
-	gotoxy(28, 3);
-	printf("%c          BitCar          %c",179,179);
-    gotoxy(28, 4);
-	printf("%c     Revenda de Carros    %c",179,179);
-	gotoxy(28, 5);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
-	gotoxy(35, 6);
-	printf("Menu principal");
-	gotoxy(28, 7);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+        gotoxy(28, 2);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
+        gotoxy(28, 3);
+        printf("%c          BitCar          %c",179,179);
+        gotoxy(28, 4);
+        printf("%c     Revenda de Carros    %c",179,179);
+        gotoxy(28, 5);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
+        gotoxy(35, 6);
+        printf("Menu principal");
+        gotoxy(28, 7);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
 
-    gotoxy(28, 9);
-    printf("[1] Incluir");
-    gotoxy(28, 10);
-    printf("[2] Buscar");
-    gotoxy(28, 11);
-    printf("[3] Alterar");
-    gotoxy(28, 12);
-    printf("[4] Listar");
-    gotoxy(28, 13);
-    printf("[5] Excluir");
-    gotoxy(28, 14);
-    printf("[6] Gerar relatorio");
-    gotoxy(28, 15);
-    printf("[7] Sair");
+        gotoxy(28, 9);
+        printf("[1] Incluir");
+        gotoxy(28, 10);
+        printf("[2] Buscar");
+        gotoxy(28, 11);
+        printf("[3] Alterar");
+        gotoxy(28, 12);
+        printf("[4] Listar");
+        gotoxy(28, 13);
+        printf("[5] Excluir");
+        gotoxy(28, 14);
+        printf("[6] Gerar relatorio");
+        gotoxy(28, 15);
+        printf("[7] Sair");
 
-    gotoxy(28, 17);
-    printf("Escolha a opcao desejada: ");
-    opcao = getche(); //função da biblioteca conio.h que lê o caractere digitado pelo usuário 
+        gotoxy(28, 17);
+        printf("Escolha a opcao desejada: ");
+        opcao = getche(); //função da biblioteca conio.h que lê o caractere digitado pelo usuário 
 
-    switch(opcao)
-    {
-        case '1':
-            incluir();
-            break;
+        switch(opcao)
+        {
+            case '1':
+                incluir();
+                break;
 
-        case '2':
+            case '2':
 
-            break;
+                break;
 
-        case '3':
+            case '3':
 
-            break;
+                break;
 
-        case '4':
+            case '4':
 
-            break;
+                break;
 
-        case '5':
+            case '5':
 
-            break;
+                break;
 
-        case '6':
+            case '6':
 
-            break;
+                break;
 
-        case '7':
-            sair();
-            break;
+            case '7':
+                sair();
+                break;
 
-        default:
-            menu();
-            break;
-    }
+            default:
+                gotoxy(28, 19);
+                printf("Opcao invalida! Tente novamente.");
+                Sleep(1200);
+                break;
+        }
+    }while(opcao != '7');
 }
 
 void incluir()
@@ -284,14 +289,15 @@ void incluir()
 
     if(arq)
     {
-        fread(&carro, sizeof(cadastro), 1, arq);
-        while(!feof(arq))
+
+        rewind(arq);
+
+        while(fread(&carro, sizeof(cadastro), 1, arq) == 1)
         {
-            if(codigo == carro.codigo)
+            if(carro.codigo >= codigo)
             {
-                codigo++;
+                codigo = carro.codigo + 1;
             }
-            fread(&carro, sizeof(cadastro), 1, arq);
         }
         carro.codigo = codigo;
 
@@ -311,35 +317,35 @@ void incluir()
         printf("Preco de venda: ");
         _strdate(carro.data);
 
-        gotoxy(12, 9);
+        gotoxy(11, 9);
         fgets(carro.marca, 20, stdin);
         carro.marca[strcspn(carro.marca, "\n")] = 0;
 
-        gotoxy(13, 10);
+        gotoxy(12, 10);
         fgets(carro.modelo, 20, stdin);
         carro.modelo[strcspn(carro.modelo, "\n")] = 0;
 
-        gotoxy(24, 11);
+        gotoxy(23, 11);
         scanf("%d", &carro.anoFabricacao);
         while ((c = getchar()) != '\n' && c != EOF); // flush
 
-        gotoxy(20, 12);
+        gotoxy(19, 12);
         scanf("%d", &carro.anoModelo);
         while ((c = getchar()) != '\n' && c != EOF); // flush
 
         do {
-            gotoxy(67, 13);
+            gotoxy(66, 13);
             scanf("%d", &carro.combustivel);
             while ((c = getchar()) != '\n' && c != EOF); // flush
         } while (carro.combustivel < gasolina || carro.combustivel > flex);
 
         do {
-            gotoxy(41, 14);
+            gotoxy(40, 14);
             scanf("%d", &carro.tipo);
             while ((c = getchar()) != '\n' && c != EOF); // flush
         } while (carro.tipo < passeio || carro.tipo > utilitario);
 
-        gotoxy(21, 15);
+        gotoxy(20, 15);
         scanf("%lf", &carro.preco);
         while ((c = getchar()) != '\n' && c != EOF); // flush
 
@@ -352,14 +358,13 @@ void incluir()
     else
     {
         printf("Não foi possível criar ou abrir o arquivo.");
-        exit(0);
+        return;
     }
 
     //fechar o arquivo
     fclose(arq);
     gotoxy(4,23);
     system("pause");
-    menu();
 }
 
 void sair()
