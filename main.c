@@ -15,13 +15,32 @@
 // Tipos especiais (enum)
 typedef enum 
 {
-    gasolina = 1, alcool, diesel, flex
-} Combustivel;
+    gasolina = 1,
+    alcool,
+    diesel,
+    flex
+}Combustivel;
 
 typedef enum 
 {
-    passeio = 1, utilitario
-} TipoCarro;
+    passeio = 1,
+    utilitario
+}TipoCarro;
+
+// Conversão dos enums para texto
+char *combustivelStr[] = {
+    "",            // posição 0 (não usada)
+    "Gasolina",    // 1
+    "Alcool",      // 2
+    "Diesel",      // 3
+    "Flex"         // 4
+};
+
+char *tipoStr[] = {
+    "",            // posição 0 (não usada)
+    "Passeio",     // 1
+    "Utilitario"   // 2
+};
 
 //estrutura
 typedef struct
@@ -44,15 +63,15 @@ void telaCarregamento();
 void telaLogin();
 void menu();
 void incluir();
+int buscar();
 void sair();
 
 //função principal
 int main()
 {
-    system("mode con:cols=80 lines=25");
-
- 
-
+    system("mode con:cols=82 lines=27");
+    telaCarregamento();
+    telaLogin();
     menu();
 
     return 0;
@@ -61,7 +80,10 @@ int main()
 //funções
 void gotoxy(int x, int y)
 {
-    printf("%c[%d;%df", 0x1B, y, x);
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void bordas()
@@ -131,7 +153,7 @@ void telaCarregamento()
     gotoxy(80/2 - 15, 18);
     printf("Sistema carregado com sucesso!");
 
-    Sleep(900);
+    Sleep(1500);
 }
 
 void telaLogin()
@@ -141,45 +163,72 @@ void telaLogin()
     char loginUser[10] = {0};
     char senhaUser[10] = {0};
 
-    system("cls");
-	bordas();
-	gotoxy(28, 2);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
-	gotoxy(28, 3);
-	printf("%c          BitCar          %c",179,179);
-    gotoxy(28, 4);
-	printf("%c     Revenda de Carros    %c",179,179);
-	gotoxy(28, 5);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
-	gotoxy(35, 6);
-	printf("Tela de Login");
-	gotoxy(28, 7);
-	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+    int logado = 0;
+    int i = 0; 
+    char c;    
 
-    gotoxy(28, 11);
-    printf("Digite o usuario: ");
-    gotoxy(28, 12);
-    printf("Digite a senha..: ");
-
-    gotoxy(46, 11);
-    fgets(loginUser, 10, stdin);
-    loginUser[strcspn(loginUser,"\n")] = 0;
-
-    gotoxy(46, 12);
-    fgets(senhaUser, 10, stdin);
-    senhaUser[strcspn(senhaUser,"\n")] = 0;
-
-    if(strcmp(login, loginUser) == 0 && strcmp(senha, senhaUser) == 0)
+    do // Loop principal do Login (fica aqui até acertar a senha)
     {
-        menu();
-    }
-    else
-    {
-        gotoxy(25, 15);
-        printf("Usuario e/ou senha invalidos");
-        Sleep(1200);
-        telaLogin();
-    }
+        system("cls");
+        bordas();
+        gotoxy(28, 2);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
+        gotoxy(28, 3);
+        printf("%c          BitCar          %c",179,179);
+        gotoxy(28, 4);
+        printf("%c     Revenda de Carros    %c",179,179);
+        gotoxy(28, 5);
+        printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
+        gotoxy(28, 11);
+        printf("Digite o usuario: ");
+        gotoxy(28, 12);
+        printf("Digite a senha..: ");
+
+        gotoxy(46, 11);
+        fgets(loginUser, 10, stdin);
+        loginUser[strcspn(loginUser,"\n")] = 0;
+
+        gotoxy(46, 12);
+        i = 0;
+        
+        do 
+        {
+            c = getch(); // Lê a tecla
+
+            if (c == 8) // Backspace
+            {
+                if (i > 0)
+                {
+                    i--;
+                    printf("\b \b");
+                }
+            }
+            else if (c != 13) // Se não for Enter, é um caractere da senha
+            {
+                if (i < 9) // Limite de tamanho
+                {
+                    senhaUser[i] = c;
+                    printf("*");
+                    i++;
+                }
+            }
+            
+        } while (c != 13); // Repete enquanto a tecla NÃO for Enter (código 13)
+        
+        // Finaliza a string manualmente depois do loop
+        senhaUser[i] = '\0'; 
+
+        if(strcmp(login, loginUser) == 0 && strcmp(senha, senhaUser) == 0)
+        {
+            logado = 1;
+        }
+        else
+        {
+            gotoxy(25, 15);
+            printf("Usuario e/ou senha invalidos");
+            system("pause");
+        }
+    } while(logado == 0);
 }
 
 void menu()
@@ -230,33 +279,27 @@ void menu()
                 break;
 
             case '2':
-
+                buscar();
                 break;
 
             case '3':
-
+                
                 break;
 
             case '4':
-
+                
                 break;
 
             case '5':
-
+                
                 break;
 
             case '6':
-
+                
                 break;
 
             case '7':
                 sair();
-                break;
-
-            default:
-                gotoxy(28, 19);
-                printf("Opcao invalida! Tente novamente.");
-                Sleep(1200);
                 break;
         }
     }while(opcao != '7');
@@ -267,7 +310,7 @@ void incluir()
     cadastro carro;
     FILE *arq;
     int codigo = 1;
-    int c;
+    int c; //usado para limpar o buffer
 
     system("cls");
     bordas();
@@ -279,8 +322,8 @@ void incluir()
 	printf("%c     Revenda de Carros    %c",179,179);
 	gotoxy(28, 5);
 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
-	gotoxy(31, 6);
-	printf("  Cadastro de Carros");
+	gotoxy(38, 6);
+	printf("Incluir");
 	gotoxy(28, 7);
 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
 
@@ -289,10 +332,9 @@ void incluir()
 
     if(arq)
     {
-
         rewind(arq);
 
-        while(fread(&carro, sizeof(cadastro), 1, arq) == 1)
+        while(fread(&carro, sizeof(cadastro), 1, arq))
         {
             if(carro.codigo >= codigo)
             {
@@ -333,13 +375,15 @@ void incluir()
         scanf("%d", &carro.anoModelo);
         while ((c = getchar()) != '\n' && c != EOF); // flush
 
-        do {
+        do 
+        {
             gotoxy(66, 13);
             scanf("%d", &carro.combustivel);
             while ((c = getchar()) != '\n' && c != EOF); // flush
         } while (carro.combustivel < gasolina || carro.combustivel > flex);
 
-        do {
+        do 
+        {
             gotoxy(40, 14);
             scanf("%d", &carro.tipo);
             while ((c = getchar()) != '\n' && c != EOF); // flush
@@ -352,12 +396,15 @@ void incluir()
         //gravar os dados no arquivo
         fwrite(&carro, sizeof(cadastro), 1, arq);
 
-        gotoxy(4, 17);
+        gotoxy(4, 18);
         printf("Dados gravados com sucesso!\n");
     }
     else
     {
-        printf("Não foi possível criar ou abrir o arquivo.");
+        gotoxy(26, 13);
+        printf("Nao foi possivel abrir o arquivo.");
+        gotoxy(4,23);
+        system("pause");
         return;
     }
 
@@ -367,13 +414,91 @@ void incluir()
     system("pause");
 }
 
+int buscar()
+{
+    cadastro carro;
+    FILE *arq;
+    int busca;
+    int c; //usado para limpar o buffer
+
+    system("cls");
+    bordas();
+    gotoxy(28, 2);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",218,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,191);
+	gotoxy(28, 3);
+	printf("%c          BitCar          %c",179,179);
+    gotoxy(28, 4);
+	printf("%c     Revenda de Carros    %c",179,179);
+	gotoxy(28, 5);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",192,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,217);
+	gotoxy(39, 6);
+	printf("Buscar");
+	gotoxy(28, 7);
+	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+
+    //abre o arquivo binario para leitura
+    arq = fopen("carros.dat", "rb");
+
+    if(arq)
+    {
+        gotoxy(4, 9);
+        printf("Digite o codigo do carro que deseja buscar: ");
+        gotoxy(48, 9);
+        scanf("%d", &busca);
+        while ((c = getchar()) != '\n' && c != EOF); 
+
+        while(fread(&carro, sizeof(cadastro), 1, arq))
+        {
+            if(busca == carro.codigo)
+            {
+                gotoxy(4, 11);
+                printf("Marca: %s", carro.marca);
+                gotoxy(4,12);
+                printf("Modelo: %s", carro.modelo);
+                gotoxy(4, 13);
+                printf("Ano de fabricacao: %d", carro.anoFabricacao);
+                gotoxy(4, 14);
+                printf("Ano do modelo: %d", carro.anoModelo);
+                gotoxy(4, 15);
+                printf("Combustivel: %s", combustivelStr[carro.combustivel]);
+                gotoxy(4,16);
+                printf("Tipo: %s", tipoStr[carro.tipo]);
+                gotoxy(4, 17);
+                printf("Preco: %.2lf", carro.preco);
+
+                fclose(arq);
+                gotoxy(4, 23);
+                system("pause");
+                return 1;
+            }         
+        }
+
+        gotoxy(4, 11);
+        printf("Carro nao encontrado!");
+
+        fclose(arq);
+        gotoxy(4, 23);
+        system("pause");
+        return 0;
+    }
+    else
+    {
+        gotoxy(26, 13);
+        printf("Nao foi possivel abrir o arquivo.");
+        gotoxy(4,23);
+        system("pause");
+        return 0;
+    }
+}
+
 void sair()
 {
     system("cls");
     bordas();
     gotoxy(25, 12);
     printf("Obrigado por usar nosso sistema!");
-    gotoxy(4,23);
-    system("pause");
-    exit(0);
+    gotoxy(4, 23);
+    printf("Pressione qualquer tecla para sair...");
+    getch(); //espera 1 tecla sem mostrar nada
+    exit(0);   
 }
