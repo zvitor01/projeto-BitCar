@@ -1,0 +1,31 @@
+RELATORIO GERAL DE ESTOQUE - BITCAR
+Data de Geracao:;02/12/2025
+
+CODIGO;MARCA;MODELO;ANO FAB;ANO MOD;COMBUSTIVEL;TIPO;PRECO;DATA CAD;STATUS
+1;Honda;HR-V;2025;2026;Flex;Passeio;163200.00;01/12/2025;Ativo
+2;Hyundai;Palisade;2025;2025;Gasolina;Passeio;479990.00;01/12/2025;Ativo
+3;Volkswagen;Taos;2025;2025;Flex;Passeio;205000.00;01/12/2025;Ativo
+4;Toyota;Hilux;2021;2021;Diesel;Passeio;289900.00;01/12/2025;Ativo
+6;Toyota;Yaris;2019;2020;Flex;Passeio;94900.00;01/12/2025;Ativo
+8;Hyundai;HB20X;2018;2019;Flex;Passeio;78900.00;01/12/2025;Ativo
+9;Ford;Ranger;2025;2025;Gasolina;Passeio;469900.00;01/12/2025;Ativo
+10;Chevrolet;Tracker;2018;2018;Flex;Passeio;99900.00;01/12/2025;Ativo
+11;Volkswagen;Up;2019;2020;Flex;Passeio;66900.00;01/12/2025;Ativo
+12;Fiat;Argo;2021;2021;Flex;Passeio;89900.00;01/12/2025;Ativo
+14;Chevrolet;Onix;2023;2024;Flex;Passeio;87900.00;01/12/2025;Ativo
+16;Toyota;Hilux SW4;2024;2024;Diesel;Passeio;365900.00;02/12/2025;Ativo
+17;Jeep;Compass;2022;2023;Diesel;Passeio;152900.00;02/12/2025;Ativo
+18;Fiat;Strada;2022;2022;Flex;Passeio;72900.00;02/12/2025;Ativo
+19;Mercedes-Benz;GLB 200;2023;2024;Gasolina;Passeio;299900.00;02/12/2025;Ativo
+20;BMW;X1;2021;2022;Flex;Passeio;178590.00;02/12/2025;Ativo
+21;Audi;RS Q8;2023;2023;Gasolina;Passeio;949990.00;02/12/2025;Ativo
+22;Fiat;Fastback;2024;2025;Flex;Passeio;145000.00;02/12/2025;Ativo
+23;Chevrolet;Onix;2025;2026;Alcool;Utilitario;120000.00;02/12/2025;Ativo
+
+
+;;;RESUMO FINANCEIRO;;;;;RESUMO DE FROTA
+;;;Valor Total em Estoque:;R$ 4411570.00;;;;Total de Carros:;19
+;;;Media de Preco:;R$ 232187.89;;;;Gasolina:;4
+;;;Carro Mais Caro:;RS Q8 (R$ 949990.00);;;;Alcool:;1
+;;;Carro Mais Barato:;Up (R$ 66900.00);;;;Diesel:;3
+;;;;;;;;Flex:;11
