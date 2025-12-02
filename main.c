@@ -169,13 +169,14 @@ void telaCarregamento()
         gotoxy(80/2 - 3, 15);
         printf("%d%%   ", (i * 100) / tam); //porcentagem
 
-        Sleep(80);
+        Sleep(40);
     }
 
     gotoxy(80/2 - 15, 18);
     printf("Sistema carregado com sucesso!");
 
-    Sleep(1500);
+    gotoxy(4, 23);
+    system("pause");
 }
 
 void telaLogin()
